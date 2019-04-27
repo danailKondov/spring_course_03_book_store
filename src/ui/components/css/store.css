@@ -1,0 +1,27 @@
+.Modal {
+    z-index: 9999;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 700px;
+    min-height: 300px;
+    padding: 15px;
+    border-radius: 10px;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background: #fff;
+}
+
+.Overlay {
+    z-index: 9998;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.3);
+}
+
+[hidden] {
+    display: none !important;
+}

@@ -2,27 +2,77 @@ import React from 'react'
 import {Link, withRouter} from "react-router-dom";
 import PropTypes from 'prop-types'
 import './css/store.css'
-import {getBookById, updateBook} from "./Service";
+import {getBookById, getFileById, updateBook} from "./Service";
 
 class EditBook extends React.Component {
 
     state = {
         isSuccessfulUpdate: null,
+        isLoadingCover: false,
+        isLoadingContent: false,
         book: {
+            id: ' ',
             authors: ' ',
             title: ' ',
             genre: ' ',
             description: ' ',
-            content: null,
-            cover: null
-        }
+            contentId: ' ',
+            coverId: ' '
+        },
+        oldContent: null,
+        oldCover: null
     };
 
     componentDidMount() {
         const id = this.props.bookId;
-        const book = getBookById(id);
-        this.setState({book: book});
+        getBookById(id)
+            .then(response => response.json())
+            .then(book => this.setState({book: book}))
+            .then(() => {
+                this.getBookCover();
+                this.getBookContent();
+            });
     }
+
+    getBookContent = () => {
+        const contentId = this.state.book.contentId;
+        this.setState({isLoadingContent: true});
+        getFileById(contentId)
+            .then(response => {
+                if (response.status === 200 || response.status === 0) {
+                    return Promise.resolve(response)
+                } else {
+                    return Promise.reject(new Error('Error loading content with id: ' + contentId))
+                }
+            })
+            .then(response => response.blob())
+            .then((res) => {
+                const url = window.URL.createObjectURL(new Blob([res], { type: 'application/pdf' }));
+                this.setState({oldContent: url, isLoadingContent: false});
+            })
+    };
+
+    getBookCover = () => {
+        const coverId = this.state.book.coverId;
+        this.setState({isLoadingCover: true});
+        getFileById(coverId)
+            .then(response => {
+                if (response.status === 200 || response.status === 0) {
+                    return Promise.resolve(response)
+                } else {
+                    return Promise.reject(new Error('Error loading cover with id: ' + coverId))
+                }
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    let url = e.target.result;
+                    this.setState({oldCover: url, isLoadingCover: false});
+                };
+                reader.readAsDataURL(blob);
+            });
+    };
 
     handleUpdate = (e) => {
         e.preventDefault();
@@ -31,6 +81,7 @@ class EditBook extends React.Component {
         updateBook(book)
             .then(() => {
                 this.setState({isSuccessfulUpdate: true});
+                console.log('updated book: ', book);
                 this.props.onUpdate(book);
             })
             .catch(() => this.setState({isSuccessfulUpdate: false}));
@@ -41,50 +92,47 @@ class EditBook extends React.Component {
         this.setState({book: Object.assign({}, this.state.book, { [id]: value })})
     };
 
-    handleContentChange = (e) => {
-        const files = e.target.files;
-        let reader = new FileReader();
-        reader.readAsArrayBuffer(files[0]);
-        reader.onload = (e) => {
-            this.setState({ content: e.target.result })
-        };
-    };
-
-    handleCoverChange = (e) => {
-        const files = e.target.files;
-        let reader = new FileReader();
-        reader.readAsArrayBuffer(files[0]);
-        reader.onload = (e) => {
-            this.setState({ cover: e.target.result })
-        };
-    };
-
     render() {
 
         const isSuccessfulUpdate = this.state.isSuccessfulUpdate;
+        const {oldContent, oldCover, book, isLoadingContent, isLoadingCover} = this.state;
+        const {id, authors, title, genre, description} = book;
 
         return(
             <div>
                 <div id="edit">
-                    <h2>Edit book </h2>
+                    <h2>Редактирование информации о книге</h2>
                     <form id="editform" className="form-horizontal">
                         <div className="form-group">
                             <div className="col-sm-10">
-                                <label>Enter new title
+                                <label>Идентификатор
+                                    <input id="id"
+                                           className="form-control"
+                                           type="text"
+                                           value={id}
+                                           readOnly={true}
+                                           onChange={this.handleChange}/>
+                                </label>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <div className="col-sm-10">
+                                <label>Новое название
                                     <input id="title"
                                            className="form-control"
                                            type="text"
-                                           onChange={this.handleChange}
-                                           required/>
+                                           value={title}
+                                           onChange={this.handleChange}/>
                                 </label>
                             </div>
                         </div>
                         <div className='form-group'>
                             <div className='col-sm-10'>
-                                <label>Enter new authors
+                                <label>Авторы
                                     <input id='authors'
                                            className='form-control'
                                            type='text'
+                                           value={authors}
                                            onChange={this.handleChange}
                                     />
                                 </label>
@@ -92,10 +140,11 @@ class EditBook extends React.Component {
                         </div>
                         <div className='form-group'>
                             <div className='col-sm-10'>
-                                <label>Enter new genre
+                                <label>Жанр
                                     <input id='genre'
                                            className='form-control'
                                            type='text'
+                                           value={genre}
                                            onChange={this.handleChange}
                                     />
                                 </label>
@@ -103,32 +152,17 @@ class EditBook extends React.Component {
                         </div>
                         <div className='form-group'>
                             <div className='col-sm-10'>
-                                <label>Enter new description
-                                    <input id='description'
-                                           className='form-control'
-                                           type='text'
-                                           onChange={this.handleChange}
+                                <label>Описание
+                                    <textarea id='description'
+                                              rows={10}
+                                              cols={45}
+                                              className='form-control'
+                                              type='text'
+                                              value={description}
+                                              onChange={this.handleChange}
                                     />
                                 </label>
                             </div>
-                        </div>
-                        <div className='form-group'>
-                            <label>Enter new content
-                                <input id='content'
-                                       type='file'
-                                       name='files'
-                                       onChange={this.handleContentChange}
-                                />
-                            </label>
-                        </div>
-                        <div className='form-group'>
-                            <label>Enter new cover
-                                <input id='cover'
-                                       type='file'
-                                       name='files'
-                                       onChange={this.handleCoverChange}
-                                />
-                            </label>
                         </div>
                         <div className="form-group">
                             <div className="col-sm-10">
@@ -139,13 +173,28 @@ class EditBook extends React.Component {
                                 </button>
                             </div>
                         </div>
-                    </form><br/>
+                    </form>
+                    <div className="content-box">
+                        <div className="content-item">
+                            <a href={oldContent}
+                               target='_blank'
+                               className="btn btn-default"
+                               disabled={isLoadingContent || isLoadingCover}>
+                                {isLoadingContent || isLoadingCover ?
+                                    <p className='goodMsg'>Загружается книга...</p> :
+                                    <p>Посмотреть содержание</p> }
+                            </a>
+                        </div>
+                        <div  className="content-item">
+                            <img src={oldCover} width={150} alt="Обложка"/>
+                        </div>
+                    </div>
                     {
-                        isSuccessfulUpdate === true ?
-                            <p className='goodMsg'>Book was updated successfully</p> :
-                            isSuccessfulUpdate === false ?
-                                <p className='badMsg'>Something's go wrong...</p> :
-                                null
+                            isSuccessfulUpdate === true ?
+                                <p className='goodMsg'>Книга успешно обновлена</p> :
+                                isSuccessfulUpdate === false ?
+                                    <p className='badMsg'>Что-то пошло не так</p> :
+                                    null
                     }
                 </div>
             </div>

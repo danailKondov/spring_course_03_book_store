@@ -27,8 +27,8 @@ public class BookControllerTest {
         webClient = WebTestClient.bindToApplicationContext(context).build();
     }
 
-//    @Test
-//    public void addNewBookControllerTest() throws Exception {
+    @Test
+    public void addNewBookControllerTest() throws Exception {
 //        MockMultipartFile file = new MockMultipartFile("content", "foo.txt",
 //                MediaType.TEXT_PLAIN_VALUE, "Hello World".getBytes());
 //        MockMultipartFile file2 = new MockMultipartFile("cover", "foo.txt",
@@ -47,5 +47,5 @@ public class BookControllerTest {
 //                .syncBody(builder.build())
 //                .exchange()
 //                .expectStatus().is2xxSuccessful();
-//    }
+    }
 }

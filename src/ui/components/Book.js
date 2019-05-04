@@ -1,6 +1,6 @@
 import React from 'react'
 import './css/store.css'
-import {getBookCoverById} from "./Service";
+import {getFileById} from "./Service";
 
 export default class Book extends React.Component {
 
@@ -17,7 +17,7 @@ export default class Book extends React.Component {
         const {authors, title, genre, description, coverId} = this.props.book;
         this.setState({authors, title, genre, description});
 
-        getBookCoverById(coverId)
+        getFileById(coverId)
             .then(response => {
                 if (response.status === 200 || response.status === 0) {
                     return Promise.resolve(response)
@@ -34,8 +34,11 @@ export default class Book extends React.Component {
                 };
                 reader.readAsDataURL(blob);
             });
-
     }
+
+    handleDetails = () => {};
+
+    handleSubmitToCart = () => {};
 
     render() {
 
@@ -44,11 +47,22 @@ export default class Book extends React.Component {
         return (
             <React.Fragment>
                 <div className="book">
-                    <img className="cover" src={cover}/>
-                    <p>Author: {authors}</p>
-                    <p>Title: {title}</p>
-                    <p>Genre: {genre}</p>
-                    <p>Description: {description}</p>
+                    <img className="book_img" src={cover}/>
+                    <p className="book_text authors">{authors}</p>
+                    <p className="book_text title">{title}</p>
+                    <p className="book_text genre">{genre}</p>
+                    <div className="book_buttons_box">
+                        <button
+                            className='btn btn-default book_buttons'
+                            onClick={this.handleDetails}>
+                            Подробнее
+                        </button>
+                        <button
+                            className='btn btn-default book_buttons'
+                            onClick={this.handleSubmitToCart}>
+                            В корзину
+                        </button>
+                    </div>
                 </div>
             </React.Fragment>
         )

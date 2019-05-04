@@ -43,7 +43,7 @@ class BookTable extends React.Component {
             <table className="table" id="bookstable">
                 <thead>
                 <tr>
-                    <th>Book id</th><th>Title</th><th>Authors</th><th>Genre</th><th>Description</th><th>Action</th>
+                    <th>Идентификатор</th><th>Название</th><th>Автор</th><th>Жанр</th><th>Описание</th><th>Действие</th>
                 </tr>
                 </thead>
                 <tbody id="tablebody">
@@ -61,8 +61,6 @@ class BookTable extends React.Component {
                                         onClick={() => this.props.onEditView(id)}>
                                         Edit
                                     </button>
-                                </td>
-                                <td>
                                     <button
                                         className='btn btn-default'
                                         onClick={() => this.handleDelete(id)}>

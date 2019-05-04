@@ -69,15 +69,15 @@ export default class AdminPanel extends React.Component {
 
         return (
             <React.Fragment>
-                <h1>Admin panel</h1>
+                <h1>Панель администратора</h1>
 
-                <Link className="btn btn-default" to="/"> Back to main page</Link>
+                <Link className="btn btn-default book_buttons" to="/"> На главную страницу</Link>
 
                 <button
-                    className='btn btn-default'
+                    className='btn btn-default book_buttons'
                     onClick={this.openAddView}
                 >
-                    Add new book item
+                    Добавить новую книгу
                 </button>
 
                 <BookTable
@@ -103,7 +103,7 @@ export default class AdminPanel extends React.Component {
                         className='btn btn-default'
                         onClick={this.closeEditView}
                     >
-                        Close
+                        Закрыть
                     </button>
                 </Modal>
 
@@ -121,7 +121,7 @@ export default class AdminPanel extends React.Component {
                         className='btn btn-default'
                         onClick={this.closeAddView}
                     >
-                        Close
+                        Закрыть
                     </button>
                 </Modal>
             </React.Fragment>

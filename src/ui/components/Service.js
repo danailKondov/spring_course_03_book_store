@@ -1,7 +1,6 @@
 export function postBook(formData) {
     return fetch('/api/books/', {
         method: 'post',
-        headers: {'Content-Type':'multipart/form-data; boundary=qwertyasdfg'},
         body: formData
     });
 }
@@ -14,8 +13,8 @@ export function getBookById(id) {
     return fetch('/api/books/' + id);
 }
 
-export function getBookCoverById(id) {
-    return fetch('/api/books/cover/' + id);
+export function getFileById(id) {
+    return fetch('/api/books/file/' + id);
 }
 
 export function deleteById(id) {

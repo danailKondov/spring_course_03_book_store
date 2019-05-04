@@ -69,12 +69,12 @@ class AddBook extends React.Component {
     render() {
 
         return(
-            <div id='add'>
-                <h2>Add new Book</h2>
+            <div id='add' className="modal_content">
+                <h2>Добавить книгу</h2>
                 <form id='addform' className='form-horizontal'>
                     <div className='form-group'>
                         <div className='col-sm-10'>
-                            <label>Authors
+                            <label>Авторы
                                 <input id='authors'
                                        className='form-control'
                                        type='text'
@@ -85,7 +85,7 @@ class AddBook extends React.Component {
                     </div>
                     <div className='form-group'>
                         <div className='col-sm-10'>
-                            <label>Title
+                            <label>Заголовок
                                 <input id='title'
                                        className='form-control'
                                        type='text'
@@ -96,7 +96,7 @@ class AddBook extends React.Component {
                     </div>
                     <div className='form-group'>
                         <div className='col-sm-10'>
-                            <label>Genre
+                            <label>Жанр
                                 <input id='genre'
                                        className='form-control'
                                        type='text'
@@ -107,7 +107,7 @@ class AddBook extends React.Component {
                     </div>
                     <div className='form-group'>
                         <div className='col-sm-10'>
-                            <label>Description
+                            <label>Описание
                                 <textarea id='description'
                                           rows={10}
                                           cols={45}
@@ -119,8 +119,9 @@ class AddBook extends React.Component {
                         </div>
                     </div>
                     <div className='form-group'>
-                        <label>Content
+                        <label>Файл книги
                             <input id='content'
+                                   className="content"
                                    type='file'
                                    name='files'
                                    onChange={this.handleFileChange}
@@ -128,8 +129,9 @@ class AddBook extends React.Component {
                         </label>
                     </div>
                     <div className='form-group'>
-                        <label>Cover
+                        <label>Обложка
                             <input id='cover'
+                                   className="cover"
                                    type='file'
                                    name='files'
                                    onChange={this.handleFileChange}
@@ -142,15 +144,15 @@ class AddBook extends React.Component {
                                 className='btn btn-default'
                                 onClick={this.handleSubmit}
                                 disabled={!this.validate()}>
-                                Add Book
+                                Добавить
                             </button>
                         </div>
                     </div>
                     {
                         this.state.addResult === true ?
-                            <p className='goodMsg'>Book was added successfully</p> :
+                            <p className='goodMsg'>Книга добавлена</p> :
                             this.state.addResult === false ?
-                                <p className='badMsg'>Something's go wrong...</p> :
+                                <p className='badMsg'>Что-то пошло не так...</p> :
                                 null
                     }
                 </form><br/>

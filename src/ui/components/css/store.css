@@ -10,6 +10,8 @@
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     background: #fff;
+    max-height: 100vh; /*for scrolling*/
+    overflow-y: auto; /*for scrolling*/
 }
 
 .Overlay {
@@ -24,4 +26,92 @@
 
 [hidden] {
     display: none !important;
+}
+
+h1, label {
+    margin-left: 10px;
+}
+
+.bookPanel {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.book {
+    width: 250px;
+    height: 440px;
+    border: 2px solid black;
+    border-radius: 20px;
+    margin: 20px;
+    padding: 10px;
+    position:relative;
+    box-shadow: 10px 10px 24px -14px #000000;
+}
+
+.book_buttons_box {
+    position:absolute;
+    bottom:15px;
+}
+
+.book_buttons {
+    display:inline-block;
+    margin: 10px;
+}
+
+.book_img {
+    height: 210px;
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.book_text {
+    margin-left: 10px;
+}
+
+.authors {
+    margin-top: 10px;
+    font-size: medium;
+    font-family: cursive;
+}
+
+.title {
+    font-size: large;
+}
+
+.links {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.cover, .content {
+    margin-left: 10px;
+}
+
+.table {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.goodMsg {
+    color: green;
+}
+.badMsg {
+    color: red;
+}
+
+.content-box {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.content-item {
+    margin-right: 10px;
+}
+
+button {
+    margin-right: 10px;
 }

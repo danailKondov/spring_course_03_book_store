@@ -12,17 +12,21 @@ class AddBook extends React.Component {
         genre: ' ',
         description: ' ',
         content: null,
-        cover: null
+        cover: null,
+        quantity: 0,
+        price: 0,
     };
 
     handleSubmit = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        const { authors, title, genre, description, content, cover} = this.state;
+        const { authors, title, genre, description, content, cover, quantity, price} = this.state;
         let formData = new FormData();
         formData.append('authors', authors);
         formData.append('title', title);
         formData.append('genre', genre);
+        formData.append('quantity', quantity);
+        formData.append('price', price);
         formData.append('description', description);
         formData.append('content', content, content.name);
         formData.append('cover', cover, cover.name);
@@ -35,7 +39,9 @@ class AddBook extends React.Component {
                     genre: ' ',
                     description: ' ',
                     content: null,
-                    cover: null
+                    cover: null,
+                    quantity: 0,
+                    price: 0,
                 });
                 return resp.json();
             })
@@ -59,8 +65,8 @@ class AddBook extends React.Component {
     };
 
     validate = () => {
-        const { authors, title, genre, description, content, cover } = this.state;
-        if (authors.trim() && title.trim() && genre.trim() && description.trim() && content && cover){
+        const { authors, title, genre, description, content, cover, quantity, price } = this.state;
+        if (authors.trim() && title.trim() && genre.trim() && description.trim() && quantity && price && content && cover){
             return true
         }
         return false
@@ -102,6 +108,30 @@ class AddBook extends React.Component {
                                        type='text'
                                        onChange={this.handleChange}
                                  />
+                            </label>
+                        </div>
+                    </div>
+                    <div className='form-group'>
+                        <div className='col-sm-10'>
+                            <label>Количество
+                                <input id='quantity'
+                                       className='form-control'
+                                       type='number'
+                                       min={0}
+                                       onChange={this.handleChange}
+                                />
+                            </label>
+                        </div>
+                    </div>
+                    <div className='form-group'>
+                        <div className='col-sm-10'>
+                            <label>Цена
+                                <input id='price'
+                                       className='form-control'
+                                       type='number'
+                                       min={0}
+                                       onChange={this.handleChange}
+                                />
                             </label>
                         </div>
                     </div>

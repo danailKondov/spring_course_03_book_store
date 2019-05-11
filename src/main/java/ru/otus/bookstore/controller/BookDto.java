@@ -11,6 +11,8 @@ public class BookDto {
     private String authors;
     private String title;
     private String genre;
+    private Long price;
+    private Boolean isAvailable;
     private String description;
     private String coverId;
 }

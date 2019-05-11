@@ -17,7 +17,9 @@ class EditBook extends React.Component {
             genre: ' ',
             description: ' ',
             contentId: ' ',
-            coverId: ' '
+            coverId: ' ',
+            quantity: 0,
+            price: 0
         },
         oldContent: null,
         oldCover: null
@@ -81,7 +83,6 @@ class EditBook extends React.Component {
         updateBook(book)
             .then(() => {
                 this.setState({isSuccessfulUpdate: true});
-                console.log('updated book: ', book);
                 this.props.onUpdate(book);
             })
             .catch(() => this.setState({isSuccessfulUpdate: false}));
@@ -96,7 +97,7 @@ class EditBook extends React.Component {
 
         const isSuccessfulUpdate = this.state.isSuccessfulUpdate;
         const {oldContent, oldCover, book, isLoadingContent, isLoadingCover} = this.state;
-        const {id, authors, title, genre, description} = book;
+        const {id, authors, title, genre, description, quantity, price} = book;
 
         return(
             <div>
@@ -145,6 +146,32 @@ class EditBook extends React.Component {
                                            className='form-control'
                                            type='text'
                                            value={genre}
+                                           onChange={this.handleChange}
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                        <div className='form-group'>
+                            <div className='col-sm-10'>
+                                <label>Количество
+                                    <input id='quantity'
+                                           className='form-control'
+                                           type='number'
+                                           value={quantity}
+                                           min={0}
+                                           onChange={this.handleChange}
+                                    />
+                                </label>
+                            </div>
+                        </div>
+                        <div className='form-group'>
+                            <div className='col-sm-10'>
+                                <label>Цена
+                                    <input id='price'
+                                           className='form-control'
+                                           type='number'
+                                           value={price}
+                                           min={0}
                                            onChange={this.handleChange}
                                     />
                                 </label>

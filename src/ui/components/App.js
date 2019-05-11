@@ -12,14 +12,22 @@ export default class App extends React.Component {
     };
 
     componentDidMount() {
-        this.fetchBooks();
+        const books = sessionStorage.getItem("book_items");
+        if (books) {
+            this.setState({books: JSON.parse(books)});
+        } else {
+            this.fetchBooks();
+        }
     }
 
     fetchBooks = () => {
         this.setState({ isLoading: true });
         getAllBooks()
             .then(response => response.json())
-            .then(books => this.setState({isLoading: false, books: books}));
+            .then(books => {
+                this.setState({isLoading: false, books: books});
+                sessionStorage.setItem("book_items", JSON.stringify(books));
+            });
     };
 
     render() {

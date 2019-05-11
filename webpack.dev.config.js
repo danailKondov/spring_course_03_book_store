@@ -20,21 +20,36 @@ module.exports = {
             app.get('/api/books/', (req, res) => res.send([
                 {
                     id: '1',
-                    title: 'Привяу',
+                    title: 'testTitle',
                     authors: 'testAut',
                     genre: 'testGen',
                     description: 'testDescription',
-                    content: [],
-                    cover: []
+                    contentId: 'safasdfasf',
+                    coverId: 'sdfsdfgsfgsd',
+                    price: 123,
+                    isAvailable: true
                 },
                 {
                     id: '2',
+                    title: 'testTitle2',
+                    authors: 'testAut2',
+                    genre: 'testGen2',
+                    description: 'testDescription2',
+                    contentId: 'safasdfasf2',
+                    coverId: 'sdfsdfgsfgsd2',
+                    price: 300,
+                    isAvailable: true
+                },
+                {
+                    id: '3',
                     title: 'Test',
                     authors: 'testAut',
                     genre: 'testGen',
                     description: 'testDescription2',
-                    content: [],
-                    cover: []
+                    contentId: 'safasdfasfsdfsdf',
+                    coverId: 'sdfsdfgsfgsdsdfsdf',
+                    price: 256,
+                    isAvailable: false
                 }
             ]));
             app.get('/api/books/1', (req, res) => res.send([
@@ -44,8 +59,10 @@ module.exports = {
                     authors: 'testAut',
                     genre: 'testGen',
                     description: 'testDescription',
-                    content: [],
-                    cover: []
+                    contentId: 'safasdfasfsdfsdf',
+                    coverId: 'sdfsdfgsfgsdsdfsdf',
+                    quantity: 5,
+                    price: 640
                 }
             ]));
             app.post('/api/books/', (req, res) => res.send(
@@ -59,8 +76,10 @@ module.exports = {
                     authors: 'testAut update',
                     genre: 'testGen update',
                     description: 'testDescription update',
-                    content: [],
-                    cover: []
+                    contentId: 'safasdfasfsdfsdf',
+                    coverId: 'sdfsdfgsfgsdsdfsdf',
+                    quantity: 5,
+                    price: 640
                 }
             ));
         }

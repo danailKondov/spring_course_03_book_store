@@ -1,69 +1,117 @@
 import React from 'react'
+import Modal from 'react-modal';
 import './css/store.css'
 import {getFileById} from "./Service";
+
+Modal.setAppElement('#root');
 
 export default class Book extends React.Component {
 
     state = {
+        id: ' ',
         authors: ' ',
         title: ' ',
         genre: ' ',
         description: ' ',
+        price: 0,
+        isAvailable: null,
         coverId: ' ',
-        cover: null
+        isBookViewOpen: false,
+        isBookOnCart: false
     };
 
     componentDidMount() {
-        const {authors, title, genre, description, coverId} = this.props.book;
-        this.setState({authors, title, genre, description});
+        const {id, authors, title, genre, description, coverId, isAvailable, price} = this.props.book;
+        this.setState({id, authors, title, genre, description, coverId, isAvailable, price});
 
-        getFileById(coverId)
-            .then(response => {
-                if (response.status === 200 || response.status === 0) {
-                    return Promise.resolve(response)
-                } else {
-                    return Promise.reject(new Error('Error loading cover with id: ' + coverId))
-                }
-            })
-            .then(response => response.blob())
-            .then(blob => {
-                let reader = new FileReader();
-                reader.onload = (e) => {
-                    let url = e.target.result;
-                    this.setState({cover: url});
-                };
-                reader.readAsDataURL(blob);
-            });
+        let cart = sessionStorage.getItem("books_cart");
+        if (cart) {
+            let jsonCart = JSON.parse(cart);
+            let bookOnCard = jsonCart.find(book => book.id === id);
+            if (bookOnCard) {
+                this.setState({isBookOnCart: true});
+            }
+        }
     }
 
-    handleDetails = () => {};
+    closeBookView = () => {
+        this.setState({isBookViewOpen: false});
+    };
 
-    handleSubmitToCart = () => {};
+    handleBookViewOpen = () => {
+        this.setState({isBookViewOpen: true});
+    };
+
+    handleSubmitToCart = () => {
+        this.setState({isBookOnCart: true});
+        let cart = sessionStorage.getItem("books_cart");
+        let jsonCart = [];
+        if (cart) {
+            jsonCart = JSON.parse(cart);
+        }
+            jsonCart.push(this.props.book);
+            sessionStorage.setItem("books_cart", JSON.stringify(jsonCart));
+    };
 
     render() {
 
-        const {authors, title, genre, description, cover} = this.state;
+        const {authors, title, genre, description, price, isBookViewOpen, isBookOnCart, isAvailable, coverId} = this.state;
 
         return (
             <React.Fragment>
-                <div className="book">
-                    <img className="book_img" src={cover}/>
+                <div className={isAvailable ? 'book' : 'book not_available'}>
+                    <img className="book_img" src={"/api/books/file/" + coverId}/>
                     <p className="book_text authors">{authors}</p>
                     <p className="book_text title">{title}</p>
                     <p className="book_text genre">{genre}</p>
+                    <p className="book_text price">{`Цена: ${price}`}</p>
+                    {
+                        isAvailable ? null : <p className="book_text">Книги нет в наличии</p>
+                    }
                     <div className="book_buttons_box">
                         <button
                             className='btn btn-default book_buttons'
-                            onClick={this.handleDetails}>
+                            onClick={this.handleBookViewOpen}>
                             Подробнее
                         </button>
                         <button
-                            className='btn btn-default book_buttons'
+                            className={isBookOnCart ? 'btn btn-default book_buttons_chosen' : 'btn btn-default book_buttons'}
+                            disabled={isBookOnCart || !isAvailable}
                             onClick={this.handleSubmitToCart}>
-                            В корзину
+                            {isBookOnCart ? 'Выбрана' : 'В корзину'}
                         </button>
                     </div>
                 </div>
+                <Modal
+                    isOpen={isBookViewOpen}
+                    shouldCloseOnOverlayClick={true}
+                    shouldCloseOnEsc={true}
+                    onRequestClose={this.closeBookView}
+                    className="Modal"
+                    overlayClassName="Overlay"
+                    contentLabel="ModalLabel"
+                >
+                    <img className="book_img_large" src={"/api/books/file/" + coverId}/>
+                    <p className="book_text authors">{authors}</p>
+                    <p className="book_text title">{title}</p>
+                    <p className="book_text genre">{genre}</p>
+                    <p className="book_text description">{description}</p>
+                    {
+                        isAvailable ? null : <p>Книги нет в наличии</p>
+                    }
+                    <button
+                        className={isBookOnCart ? 'btn btn-default book_buttons_chosen' : 'btn btn-default book_buttons'}
+                        disabled={isBookOnCart || !isAvailable}
+                        onClick={this.handleSubmitToCart}>
+                        {isBookOnCart ? 'Выбрана' : 'В корзину'}
+                    </button>
+                    <button
+                        className='btn btn-default'
+                        onClick={this.closeBookView}
+                    >
+                        Закрыть
+                    </button>
+                </Modal>
             </React.Fragment>
         )
     }

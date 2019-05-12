@@ -13,8 +13,10 @@ public class Mapper {
         result.setAuthors(book.getAuthors());
         result.setTitle(book.getTitle());
         result.setGenre(book.getGenre());
+        result.setPrice(book.getPrice());
         result.setDescription(book.getDescription());
         result.setCoverId(book.getCoverId());
+        result.setIsAvailable(book.getQuantity() > 0);
         return result;
     }
 }

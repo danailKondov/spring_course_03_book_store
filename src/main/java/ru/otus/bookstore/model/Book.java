@@ -26,4 +26,6 @@ public class Book {
     private String description;
     private String contentId;
     private String coverId;
+    private Long quantity;
+    private Long price;
 }

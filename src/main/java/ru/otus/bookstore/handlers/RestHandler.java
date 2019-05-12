@@ -87,10 +87,16 @@ public class RestHandler {
             FormFieldPart authorsPart = (FormFieldPart) partMap.get("authors");
             FormFieldPart titlePart = (FormFieldPart) partMap.get("title");
             FormFieldPart genrePart = (FormFieldPart) partMap.get("genre");
+            FormFieldPart quantityPart = (FormFieldPart) partMap.get("quantity");
+            FormFieldPart pricePart = (FormFieldPart) partMap.get("price");
             FormFieldPart descriptionPart = (FormFieldPart) partMap.get("description");
 
-            Mono<String> contentId = gridFsTemplate.store(contentPart.content(), contentPart.filename()).map(ObjectId::toHexString);
-            Mono<String> coverId = gridFsTemplate.store(coverPart.content(), coverPart.filename()).map(ObjectId::toHexString);
+            Mono<String> contentId = gridFsTemplate
+                    .store(contentPart.content(), contentPart.filename())
+                    .map(ObjectId::toHexString);
+            Mono<String> coverId = gridFsTemplate
+                    .store(coverPart.content(), coverPart.filename())
+                    .map(ObjectId::toHexString);
 
             Mono<Book> bookMono = Mono.zip(contentId, coverId, (content, cover) ->
                     new Book(null,
@@ -99,7 +105,9 @@ public class RestHandler {
                             genrePart.value(),
                             descriptionPart.value(),
                             content,
-                            cover))
+                            cover,
+                            Long.valueOf(quantityPart.value()),
+                            Long.valueOf(pricePart.value())))
                     .flatMap(book -> bookRepository.save(book));
             return ServerResponse.ok().contentType(APPLICATION_JSON).body(bookMono, Book.class);
         });
@@ -113,6 +121,8 @@ public class RestHandler {
                         book.setTitle(newBook.getTitle());
                         book.setGenre(newBook.getGenre());
                         book.setDescription(newBook.getDescription());
+                        book.setQuantity(newBook.getQuantity());
+                        book.setPrice(newBook.getPrice());
                         return bookRepository.save(book);
                     });
                 });

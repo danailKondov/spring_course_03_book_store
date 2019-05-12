@@ -40,6 +40,7 @@ class BookTable extends React.Component {
         let books = this.state.books;
 
         return(
+            <div className="table_container">
             <table className="table" id="bookstable">
                 <thead>
                 <tr>
@@ -72,6 +73,7 @@ class BookTable extends React.Component {
                     }
                 </tbody>
             </table>
+            </div>
         )
     }
 }

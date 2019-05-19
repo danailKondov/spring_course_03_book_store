@@ -82,6 +82,14 @@ module.exports = {
                     price: 640
                 }
             ));
+            app.get('/api/user/testname', (req, res) => res.send(
+                {
+                    isAvailable: true,
+                }
+            ));
+            app.post('/api/user/', (req, res) => res.send(
+                {success: true, message: 'User successfully saved'}
+            ));
         }
     },
 

@@ -14,3 +14,7 @@ logging:
 mongo:
   uri: mongodb://localhost:27017/
   basename: book_store
+
+token:
+  secret: SIxkA7wGqbgmDtoM9bMcTTJ50SIuVfODlQApYbGSr8IM49JsqhZQwWEenKDq7g6dGfRedSjklUY
+  expirationTime: 28800

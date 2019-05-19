@@ -1,9 +1,9 @@
 import React from 'react';
-import './css/store.css';
-import {Header} from "./Header";
-import deleteImg from './img/delete.jpg';
-import {getAllBooks} from "./Service";
+import '../css/store.css';
+import deleteImg from '../img/delete.jpg';
+import {getAllBooks} from "../Service";
 import {Counter} from "./Counter";
+import {Header} from "../Header";
 
 export default class Cart extends React.Component {
 
@@ -60,7 +60,7 @@ export default class Cart extends React.Component {
 
         return (
             <React.Fragment>
-                <Header/>
+                <Header history={this.props.history}/>
                 <div className="table_container">
                     <table className="table" id="carttable">
                         <thead>

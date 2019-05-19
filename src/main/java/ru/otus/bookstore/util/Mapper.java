@@ -1,7 +1,7 @@
 package ru.otus.bookstore.util;
 
 import org.springframework.stereotype.Component;
-import ru.otus.bookstore.controller.BookDto;
+import ru.otus.bookstore.payload.BookDto;
 import ru.otus.bookstore.model.Book;
 
 @Component

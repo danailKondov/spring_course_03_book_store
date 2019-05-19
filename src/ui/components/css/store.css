@@ -153,3 +153,32 @@ h1, label {
 button {
     margin-right: 10px;
 }
+
+.auth_block {
+    float: right;
+    margin-right: 10px;
+}
+
+.message {
+    margin-left: 10px;
+    font-size: medium;
+    font-family: cursive;
+}
+
+.username {
+    margin-top: 10px;
+    font-size: medium;
+    font-family: cursive;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.submit_login {
+    margin-left: 10px;
+}

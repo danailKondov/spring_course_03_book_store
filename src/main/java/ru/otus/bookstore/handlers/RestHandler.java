@@ -16,7 +16,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.otus.bookstore.controller.BookDto;
+import ru.otus.bookstore.payload.BookDto;
 import ru.otus.bookstore.model.Book;
 import ru.otus.bookstore.repository.BookRepository;
 import ru.otus.bookstore.util.Mapper;

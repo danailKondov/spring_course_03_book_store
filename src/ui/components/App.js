@@ -1,8 +1,8 @@
 import React from 'react'
 import './css/store.css'
-import {Header} from "./Header";
 import MainBookPanel from "./MainBookPanel";
 import {getAllBooks} from "./Service";
+import {Header} from "./Header";
 
 export default class App extends React.Component {
 
@@ -36,7 +36,7 @@ export default class App extends React.Component {
 
         return (
             <React.Fragment>
-                <Header/>
+                <Header history={this.props.history}/>
                 <MainBookPanel books={books}/>
             </React.Fragment>
         )

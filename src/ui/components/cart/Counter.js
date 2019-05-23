@@ -1,7 +1,7 @@
 import React from 'react'
-import leftArrow from './img/arrow_left.png'
-import rightArrow from './img/arrow_right.jpg'
-import './css/store.css'
+import leftArrow from '../img/arrow_left.png'
+import rightArrow from '../img/arrow_right.jpg'
+import '../css/store.css'
 
 export const Counter = (props) => {
     return (

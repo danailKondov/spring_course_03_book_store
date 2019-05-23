@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import './css/store.css'
-import {postBook} from "./Service";
+import '../css/store.css'
+import {postBook} from "../Service";
 
 class AddBook extends React.Component {
 
@@ -49,7 +49,7 @@ class AddBook extends React.Component {
                 this.props.onAdd(book);
             })
             .catch(
-                this.setState({addResult: false})
+                () => this.setState({addResult: false})
             );
     };
 

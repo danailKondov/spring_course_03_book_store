@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link, withRouter} from "react-router-dom";
 import PropTypes from 'prop-types'
-import './css/store.css'
-import {getBookById, getFileById, updateBook} from "./Service";
+import '../css/store.css'
+import {getBookById, getFileById, updateBook} from "../Service";
 
 class EditBook extends React.Component {
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Link, withRouter} from "react-router-dom";
-import './css/store.css'
-import {deleteById} from "./Service";
+import '../css/store.css'
+import {deleteById} from "../Service";
 
 class BookTable extends React.Component {
 

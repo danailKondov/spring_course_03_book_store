@@ -1,4 +1,4 @@
-package ru.otus.bookstore.controller;
+package ru.otus.bookstore.payload;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

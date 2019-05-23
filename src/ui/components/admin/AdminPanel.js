@@ -2,10 +2,11 @@ import React from 'react'
 import Modal from 'react-modal';
 import {AddBook} from "./Add";
 import BookTable from "./BookTable";
-import {getAllBooks} from "./Service";
+import {getAllBooks} from "../Service";
 import {EditBook} from "./EditBook";
-import './css/store.css'
+import '../css/store.css'
 import {Link} from "react-router-dom";
+import {ACCESS_TOKEN} from "../Const";
 
 Modal.setAppElement('#root');
 
@@ -63,6 +64,11 @@ export default class AdminPanel extends React.Component {
         this.setState({books: updBooks})
     };
 
+    handleLogout = () => {
+        localStorage.removeItem(ACCESS_TOKEN);
+        this.props.history.push("/");
+    };
+
     render() {
 
         const {books, bookIdToEdit, isShowEdit, isShowAdd} = this.state;
@@ -78,6 +84,13 @@ export default class AdminPanel extends React.Component {
                     onClick={this.openAddView}
                 >
                     Добавить новую книгу
+                </button>
+
+                <button
+                    className="btn btn-default book_buttons"
+                    onClick={this.handleLogout}
+                >
+                    Выход
                 </button>
 
                 <BookTable

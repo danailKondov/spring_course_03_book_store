@@ -37,7 +37,14 @@ export default class LogIn extends React.Component {
             .then(response => {
                 localStorage.setItem(ACCESS_TOKEN, response.accessToken);
                 this.setState({message: 'Вход успешно осуществлен'});
+
+                // обновляем хэдер
                 window.headerComponent.updateTokenStatus();
+
+                // если пришли из заказа, то после авторизации возвращаемся обратно
+                if (this.props.location.state && this.props.location.state.source === 'login') {
+                    this.props.history.push('/cart');
+                }
             })
             .catch(error => {
                 if(error.status === 401) {
@@ -51,6 +58,7 @@ export default class LogIn extends React.Component {
     render() {
 
         const {name, password, message} = this.state;
+        const locationState = this.props.location.state;
 
         return (
             <div>
@@ -95,6 +103,9 @@ export default class LogIn extends React.Component {
                 </form>
                 {
                     message ? <p className="message">{message}</p> : null
+                }
+                {
+                    locationState ? <p className="message">{locationState.message}</p> : null
                 }
             </div>
         )

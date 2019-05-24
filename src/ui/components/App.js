@@ -3,6 +3,7 @@ import './css/store.css'
 import MainBookPanel from "./MainBookPanel";
 import {getAllBooks} from "./Service";
 import {Header} from "./Header";
+import {BOOKS_ITEMS} from "./Const";
 
 export default class App extends React.Component {
 
@@ -12,7 +13,7 @@ export default class App extends React.Component {
     };
 
     componentDidMount() {
-        const books = sessionStorage.getItem("book_items");
+        const books = sessionStorage.getItem(BOOKS_ITEMS);
         if (books) {
             this.setState({books: JSON.parse(books)});
         } else {
@@ -26,7 +27,7 @@ export default class App extends React.Component {
             .then(response => response.json())
             .then(books => {
                 this.setState({isLoading: false, books: books});
-                sessionStorage.setItem("book_items", JSON.stringify(books));
+                sessionStorage.setItem(BOOKS_ITEMS, JSON.stringify(books));
             });
     };
 

@@ -1,9 +1,12 @@
 import {ACCESS_TOKEN} from "./Const";
 
 const request = (options) => {
-    const headers = new Headers();
-    if(localStorage.getItem(ACCESS_TOKEN)) {
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+    });
+    const token = localStorage.getItem(ACCESS_TOKEN);
+    if(token) {
+        headers.append('Authorization', 'Bearer ' + token)
     }
     options = Object.assign({}, {headers}, options);
     return fetch(options.url, options);
@@ -40,7 +43,6 @@ export function updateBook(book) {
     return request( {
         url: '/api/books/',
         method: 'put',
-        headers: {'Content-Type':'application/json'},
         body: JSON.stringify(book)
     });
 }
@@ -63,4 +65,18 @@ export function login(authRequest) {
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify(authRequest)
     })
+}
+
+export function buyOrder(orderRequest) {
+    return request({
+        url: '/api/order/',
+        method: 'post',
+        body: JSON.stringify(orderRequest)
+    });
+}
+
+export function getFileByPass(passId) {
+    return request({
+        url: '/api/books/pass/' + passId
+    });
 }

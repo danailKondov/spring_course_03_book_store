@@ -1,9 +1,11 @@
 import React from 'react';
 import '../css/store.css';
 import deleteImg from '../img/delete.jpg';
-import {getAllBooks} from "../Service";
 import {Counter} from "./Counter";
 import {Header} from "../Header";
+import {ACCESS_TOKEN, BOOKS_CART, ROLE_USER} from "../Const";
+import {buyOrder} from "../Service";
+const jwt = require('jsonwebtoken');
 
 export default class Cart extends React.Component {
 
@@ -12,7 +14,7 @@ export default class Cart extends React.Component {
     };
 
     componentDidMount() {
-        let cart = sessionStorage.getItem("books_cart");
+        let cart = sessionStorage.getItem(BOOKS_CART);
         if (cart) {
             let order = JSON.parse(cart).map(book => { return {
                 id: book.id,
@@ -45,12 +47,57 @@ export default class Cart extends React.Component {
     };
 
     removeItemFromOrder = (id) => {
-        const cart = JSON.parse(sessionStorage.getItem("books_cart"));
+        const cart = JSON.parse(sessionStorage.getItem(BOOKS_CART));
         const newCart = cart.filter(book => book.id !== id);
-        sessionStorage.setItem("books_cart", JSON.stringify(newCart));
+        sessionStorage.setItem(BOOKS_CART, JSON.stringify(newCart));
 
         const newOrder = this.state.order.filter(book => book.id !== id);
         this.setState({order: newOrder});
+    };
+
+    validate = () => this.state.order.length > 0;
+
+    handleSubmitOrder = () => {
+        let token = localStorage.getItem(ACCESS_TOKEN);
+        if (token) {
+            let decodedToken = jwt.decode(token);
+            const isNotExpired = decodedToken.exp > Date.now() / 1000;
+            const isUser = decodedToken.role.includes(ROLE_USER);
+            if (isNotExpired && isUser) {
+                const userName = decodedToken.sub;
+                const orderRequest = {
+                    customer: userName,
+                    date: Date.now(),
+                    books: this.state.order
+                };
+                buyOrder(orderRequest)
+                    .then(resp => resp.json())
+                    .then(orderResponse => {
+                        if (orderResponse.successful) {
+                            this.props.history.push({
+                                pathname: "/purchase",
+                                state: {passes: orderResponse.passes} // this.props.location.state.passes
+                            });
+                        }
+                    });
+                this.setState({});
+            } else {
+                this.redirectToLogin(
+                    isUser ?
+                        'Для покупки необходимо зарегистрироваться и/или войти' :
+                    'Покупки может совершать только пользователь. Необходимо перелогиниться.'
+                );
+            }
+        } else {
+            this.redirectToLogin('Для покупки необходимо зарегистрироваться и/или войти');
+        }
+    };
+
+    redirectToLogin = (message) => {
+        this.props.history.push({
+            pathname: "/login",
+            state: {source: 'login', message: message} // this.props.location.state.source
+        });
     };
 
     render() {
@@ -93,6 +140,12 @@ export default class Cart extends React.Component {
                         </tbody>
                     </table>
                     <p>{`Всего: ${orderPrice} руб.`}</p>
+                    <button
+                        className='btn btn-primary submit_buy'
+                        onClick={this.handleSubmitOrder}
+                        disabled={!this.validate()}>
+                        Купить
+                    </button>
                 </div>
             </React.Fragment>
         )

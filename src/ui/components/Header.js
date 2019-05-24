@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {ACCESS_TOKEN, ROLE_ADMIN} from "./Const";
+import {ACCESS_TOKEN, BOOKS_CART, ROLE_ADMIN} from "./Const";
 const jwt = require('jsonwebtoken');
 
 export class Header extends React.Component {
@@ -42,6 +42,7 @@ export class Header extends React.Component {
 
     handleLogout = () => {
         localStorage.removeItem(ACCESS_TOKEN);
+        sessionStorage.removeItem(BOOKS_CART);
         this.setState({
             isAuthenticated: false,
             isAdmin: false,

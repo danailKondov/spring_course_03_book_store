@@ -1,8 +1,8 @@
 import React from 'react'
-import {Link, withRouter} from "react-router-dom";
 import PropTypes from 'prop-types'
 import '../css/store.css'
 import {getBookById, getFileById, updateBook} from "../Service";
+import {BOOKS_ITEMS} from "../Const";
 
 class EditBook extends React.Component {
 
@@ -84,6 +84,7 @@ class EditBook extends React.Component {
             .then(() => {
                 this.setState({isSuccessfulUpdate: true});
                 this.props.onUpdate(book);
+                sessionStorage.removeItem(BOOKS_ITEMS);
             })
             .catch(() => this.setState({isSuccessfulUpdate: false}));
     };

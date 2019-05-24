@@ -1,7 +1,6 @@
 package ru.otus.bookstore.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
@@ -74,6 +73,12 @@ public class WebSecurityConfig {
 				.and()
 				.authorizeExchange()
 				.pathMatchers(HttpMethod.POST, "/api/user/").permitAll()
+				.and()
+				.authorizeExchange()
+				.pathMatchers(HttpMethod.POST, "/api/order/").hasRole("USER")
+				.and()
+				.authorizeExchange()
+				.pathMatchers(HttpMethod.GET, "/api/books/pass/*").hasRole("USER")
 				.and()
 				.authorizeExchange()
 				.pathMatchers(HttpMethod.OPTIONS).permitAll()

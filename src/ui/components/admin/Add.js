@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import '../css/store.css'
 import {postBook} from "../Service";
+import {BOOKS_CART, BOOKS_ITEMS} from "../Const";
 
 class AddBook extends React.Component {
 
@@ -34,10 +35,10 @@ class AddBook extends React.Component {
             .then(resp => {
                 this.setState({
                     addResult: true,
-                    authors: ' ',
-                    title: ' ',
-                    genre: ' ',
-                    description: ' ',
+                    authors: '',
+                    title: '',
+                    genre: '',
+                    description: '',
                     content: null,
                     cover: null,
                     quantity: 0,
@@ -47,6 +48,7 @@ class AddBook extends React.Component {
             })
             .then(book => {
                 this.props.onAdd(book);
+                sessionStorage.removeItem(BOOKS_ITEMS);
             })
             .catch(
                 () => this.setState({addResult: false})

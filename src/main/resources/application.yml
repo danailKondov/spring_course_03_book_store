@@ -1,15 +1,10 @@
 spring:
-  data:
-    mongodb:
-      database: book_store
-#      uri: mongodb://localhost:27017/book_store
-
   main:
     allow-bean-definition-overriding: true
 
 logging:
   level:
-    root: debug
+    root: info
 
 mongo:
   uri: mongodb://localhost:27017/

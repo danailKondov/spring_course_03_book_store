@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import ru.otus.bookstore.handlers.AuthHandler;
 import ru.otus.bookstore.handlers.RestHandler;
+import ru.otus.bookstore.handlers.SalesHandler;
 
 @Component
 public class BookRouter implements WebFluxConfigurer {
@@ -20,7 +21,8 @@ public class BookRouter implements WebFluxConfigurer {
                 .andRoute(RequestPredicates.GET("/api/books/{bookId}"), restHandler::getBookById)
                 .andRoute(RequestPredicates.DELETE("/api/books/{bookId}"), restHandler::deleteBookById)
                 .andRoute(RequestPredicates.POST("/api/books/"), restHandler::saveBook)
-                .andRoute(RequestPredicates.PUT("/api/books/"), restHandler::updateBook);
+                .andRoute(RequestPredicates.PUT("/api/books/"), restHandler::updateBook)
+                .andRoute(RequestPredicates.GET("/api/books/pass/{pass}"), restHandler::getFileByPass);
     }
 
     @Bean
@@ -28,5 +30,10 @@ public class BookRouter implements WebFluxConfigurer {
         return RouterFunctions.route(RequestPredicates.GET("/api/user/{name}"), authHandler::checkNameAvailability)
                 .andRoute(RequestPredicates.POST("/api/user/"), authHandler::saveUser)
                 .andRoute(RequestPredicates.POST("/api/auth/signin/"), authHandler::login);
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> salesRoutes(SalesHandler salesHandler) {
+        return RouterFunctions.route(RequestPredicates.POST("/api/order/"), salesHandler::processOrder);
     }
 }

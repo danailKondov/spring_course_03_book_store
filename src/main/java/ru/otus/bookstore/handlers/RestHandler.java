@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 import ru.otus.bookstore.payload.BookDto;
 import ru.otus.bookstore.model.Book;
 import ru.otus.bookstore.repository.BookRepository;
+import ru.otus.bookstore.repository.PassRepository;
 import ru.otus.bookstore.util.Mapper;
 
 import java.util.Map;
@@ -32,12 +33,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 public class RestHandler {
 
     private BookRepository bookRepository;
+    private PassRepository passRepository;
     private ReactiveGridFsTemplate gridFsTemplate;
     private Mapper mapper;
 
     @Autowired
-    public RestHandler(BookRepository bookRepository, ReactiveGridFsTemplate gridFsTemplate, Mapper mapper) {
+    public RestHandler(BookRepository bookRepository, PassRepository passRepository, ReactiveGridFsTemplate gridFsTemplate, Mapper mapper) {
         this.bookRepository = bookRepository;
+        this.passRepository = passRepository;
         this.gridFsTemplate = gridFsTemplate;
         this.mapper = mapper;
     }
@@ -127,5 +130,23 @@ public class RestHandler {
                     });
                 });
         return ServerResponse.ok().contentType(APPLICATION_JSON).body(bookMono, Book.class);
+    }
+
+    public Mono<ServerResponse> getFileByPass(ServerRequest serverRequest) {
+        Flux<DataBuffer> fileFlux = passRepository.findByPassId(serverRequest.pathVariable("pass"))
+                .flatMap(pass -> {
+                    passRepository.deleteByPassId(serverRequest.pathVariable("pass")).subscribe();
+                    return bookRepository.findById(pass.getBookId());
+                })
+                .flatMap(book -> gridFsTemplate.findOne(query(where("_id").is(book.getContentId()))))
+                .flatMap(file -> {
+                    log.info("file name: {}, length: {}", file.getFilename(), file.getLength());
+                    return gridFsTemplate.getResource(file);
+                })
+                .flatMapMany(ReactiveGridFsResource::getDownloadStream);
+        return ServerResponse
+                .ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(fileFlux, DataBuffer.class);
     }
 }

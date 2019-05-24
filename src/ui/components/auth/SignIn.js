@@ -130,7 +130,7 @@ export default class SignIn extends React.Component {
                     <div className='form-group'>
                         <div className='col-sm-10'>
                             <button
-                                className='btn btn-default'
+                                className='btn btn-default submit_login'
                                 onClick={this.handleSubmit}
                                 disabled={!this.validate()}>
                                 Добавить

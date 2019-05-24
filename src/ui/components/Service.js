@@ -12,8 +12,18 @@ const request = (options) => {
     return fetch(options.url, options);
 };
 
+const requestFile = (options) => {
+    const headers = new Headers();
+    const token = localStorage.getItem(ACCESS_TOKEN);
+    if(token) {
+        headers.append('Authorization', 'Bearer ' + token)
+    }
+    options = Object.assign({}, {headers}, options);
+    return fetch(options.url, options);
+};
+
 export function postBook(formData) {
-    return request( {
+    return requestFile( {
         url: '/api/books/',
         method: 'post',
         body: formData

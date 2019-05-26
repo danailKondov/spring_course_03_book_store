@@ -29,23 +29,23 @@ public class BookControllerTest {
 
     @Test
     public void addNewBookControllerTest() throws Exception {
-//        MockMultipartFile file = new MockMultipartFile("content", "foo.txt",
-//                MediaType.TEXT_PLAIN_VALUE, "Hello World".getBytes());
-//        MockMultipartFile file2 = new MockMultipartFile("cover", "foo.txt",
-//                MediaType.TEXT_PLAIN_VALUE, "Hello World2".getBytes());
-//
-//        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-//        builder.part("authors", "authors_test");
-//        builder.part("title", "title_test");
-//        builder.part("genre", "genre_test");
-//        builder.part("description", "description_test");
-//        builder.part("content", file);
-//        builder.part("cover", file2);
-//
-//        webClient.post()
-//                .uri("api/books/")
-//                .syncBody(builder.build())
-//                .exchange()
-//                .expectStatus().is2xxSuccessful();
+        MockMultipartFile file = new MockMultipartFile("content", "foo.txt",
+                MediaType.TEXT_PLAIN_VALUE, "Hello World".getBytes());
+        MockMultipartFile file2 = new MockMultipartFile("cover", "foo.txt",
+                MediaType.TEXT_PLAIN_VALUE, "Hello World2".getBytes());
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("authors", "authors_test");
+        builder.part("title", "title_test");
+        builder.part("genre", "genre_test");
+        builder.part("description", "description_test");
+        builder.part("content", file);
+        builder.part("cover", file2);
+
+        webClient.post()
+                .uri("api/books/")
+                .syncBody(builder.build())
+                .exchange()
+                .expectStatus().isUnauthorized();
     }
 }

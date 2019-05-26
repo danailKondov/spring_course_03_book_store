@@ -17,8 +17,8 @@ import java.util.Map;
 public class JwtUtil {
 
     @Autowired
-    @Qualifier("securityProperties")
-    private SecurityProperties properties;
+    @Qualifier("customSecurityProperties")
+    private CustomSecurityProperties properties;
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();

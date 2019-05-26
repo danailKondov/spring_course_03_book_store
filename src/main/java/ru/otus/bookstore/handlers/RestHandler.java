@@ -11,6 +11,7 @@ import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.http.codec.multipart.FormFieldPart;
 import org.springframework.http.codec.multipart.Part;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -72,6 +73,7 @@ public class RestHandler {
         return ServerResponse.ok().body(bookMono, Book.class);
     }
 
+    @Transactional
     public Mono<ServerResponse> deleteBookById(ServerRequest serverRequest) {
         return bookRepository.findById(serverRequest.pathVariable("bookId"))
                 .flatMap(book -> {
@@ -82,6 +84,7 @@ public class RestHandler {
                 .flatMap(r -> r == 0? ServerResponse.notFound().build() : ServerResponse.ok().build());
     }
 
+    @Transactional
     public Mono<ServerResponse> saveBook(ServerRequest serverRequest) {
         return serverRequest.body(BodyExtractors.toMultipartData()).flatMap(p -> {
             Map<String, Part> partMap = p.toSingleValueMap();
@@ -132,6 +135,7 @@ public class RestHandler {
         return ServerResponse.ok().contentType(APPLICATION_JSON).body(bookMono, Book.class);
     }
 
+    @Transactional
     public Mono<ServerResponse> getFileByPass(ServerRequest serverRequest) {
         Flux<DataBuffer> fileFlux = passRepository.findByPassId(serverRequest.pathVariable("pass"))
                 .flatMap(pass -> {

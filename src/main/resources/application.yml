@@ -7,8 +7,8 @@ logging:
     root: info
 
 mongo:
-  uri: mongodb://localhost:27017/
-  basename: book_store
+  uri: mongodb+srv://bookStoreAdmin:LVxAm0PQJWdT@cluster0-j6mpg.mongodb.net/test?retryWrites=true&w=majority
+  basename: BookStore
 
 token:
   secret: SIxkA7wGqbgmDtoM9bMcTTJ50SIuVfODlQApYbGSr8IM49JsqhZQwWEenKDq7g6dGfRedSjklUY
